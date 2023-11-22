@@ -1,3 +1,4 @@
+import { UserInfo } from '../App';
 import instance from '../ultis/axios';
 
 export const login = async ({
@@ -32,6 +33,6 @@ export const register = async ({
   });
 };
 
-export const getUserInfo = async () => {
-  return await instance.get('/accounts/me')
+export const getUserInfo = async (): Promise<UserInfo> => {
+  return await instance.get('/accounts/me');
 };
