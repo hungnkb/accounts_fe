@@ -1,32 +1,37 @@
 import instance from '../ultis/axios';
 
-export class AuthService {
-  login = async ({
+export const login = async ({
+  username,
+  password,
+}: {
+  username: string;
+  password: string;
+}): Promise<{ accessToken: string }> => {
+  return await instance.post('/auth/login', {
     username,
     password,
-  }: {
-    username: string;
-    password: string;
-  }) => {
-    return await instance.post('/auth/login', { username, password });
-  };
+  });
+};
 
-  register = async ({
+export const register = async ({
+  username,
+  password,
+  name,
+  email,
+}: {
+  username: string;
+  password: string;
+  name: string;
+  email: string;
+}) => {
+  return await instance.post('/auth/register', {
     username,
     password,
     name,
     email,
-  }: {
-    username: string;
-    password: string;
-    name: string;
-    email: string;
-  }) => {
-    return await instance.post('/auth/register', {
-      username,
-      password,
-      name,
-      email,
-    });
-  };
-}
+  });
+};
+
+export const getUserInfo = async () => {
+  return await instance.get('/accounts/me')
+};

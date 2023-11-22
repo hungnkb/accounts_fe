@@ -7,11 +7,16 @@ export interface CounterState {
   email?: string;
   username?: string;
   accessToken?: string;
+  isLogined?: boolean;
 }
 
 export interface PayloadLogin {
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
+  name?: string;
+  email?: string;
+  token?: string;
+  isLogined?: boolean;
 }
 
 const initialState: CounterState = {
@@ -19,26 +24,21 @@ const initialState: CounterState = {
   name: undefined,
   email: undefined,
   username: undefined,
+  accessToken: undefined,
+  isLogined: false,
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<PayloadLogin>) => {
-      localStorage.setItem('accessToken');
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    setLogin: (state, action: PayloadAction<PayloadLogin>) => {
+      state = { ...action.payload };
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = authSlice.actions;
+export const { setLogin } = authSlice.actions;
 
 export default authSlice.reducer;
