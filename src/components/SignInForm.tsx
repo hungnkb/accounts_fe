@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLogin } from '../ultis/redux/features/counters/authSlice';
 import { login } from '../services/auth';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -14,8 +14,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props: { sx: { mt: number; mb: number } }) {
   return (
@@ -36,7 +36,8 @@ function Copyright(props: { sx: { mt: number; mb: number } }) {
 }
 
 export const SignInForm = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const authState = useSelector((state: any) => state.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,18 +49,16 @@ export const SignInForm = () => {
       const token = res.accessToken.split('Bearer ')[1];
       localStorage.setItem('token', token);
       dispatch(setLogin({ token, isLogined: true }));
-      setIsLogin(true);
     }
   };
   useEffect(() => {
     const checkIsLogin = () => {
-      if (isLogin) {
-        console.log(222);
-        return redirect('/app');
+      if (authState.isLogined) {
+        navigate('/app');
       }
     };
     checkIsLogin();
-  }, [isLogin]);
+  }, [authState.isLogined, navigate]);
   return (
     <Container component="main" maxWidth="xs">
       <Stack

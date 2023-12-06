@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { SignInForm } from '../components/SignInForm';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserInfo } from '../services/auth';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { setLogin } from '../ultis/redux/features/counters/authSlice';
+import { getUserInfo } from '../services/auth';
+import Header from '../components/Header';
 
 export interface UserInfo {
   id: number | undefined;
@@ -24,17 +24,15 @@ const initialAuthState: Authorization = {
   isLogin: false,
 };
 
-export default function SignIn() {
-  // const navigate = useNavigate();
+const ProtectedRoutes = () => {
+  const navigate = useNavigate();
   const [authorization, setAuthorization] = useState({ ...initialAuthState });
   const authState = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   useEffect(() => {
     const checkLogin = async () => {
       const token = localStorage.getItem('token');
-      if (token && authState.isLogined) {
+      if (token) {
         const userInfo: UserInfo = await getUserInfo();
         if (userInfo) {
           const { id, email, name, username } = userInfo;
@@ -58,12 +56,19 @@ export default function SignIn() {
     };
     checkLogin();
   }, [dispatch, authState.isLogined]);
-
   useEffect(() => {
     if (authorization.isLogin) {
       navigate('/app');
+    } else {
+      navigate('/login');
     }
-  }, [authorization, navigate]);
+  }, [authorization.isLogin, navigate]);
+  return (
+    <>
+      <Header authorization={authorization}></Header>
+      <Outlet context={{ authorization }} />
+    </>
+  );
+};
 
-  return <SignInForm />;
-}
+export default ProtectedRoutes;

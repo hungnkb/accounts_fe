@@ -3,7 +3,7 @@ import authSlice from "./features/counters/authSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: authSlice,
+    auth: authSlice,
   },
 });
 

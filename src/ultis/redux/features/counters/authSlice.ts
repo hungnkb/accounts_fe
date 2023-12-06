@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface CounterState {
+export interface AuthState {
   id?: number;
   name?: string;
   email?: string;
@@ -17,9 +17,10 @@ export interface PayloadLogin {
   email?: string;
   token?: string;
   isLogined?: boolean;
+  id?: number;
 }
 
-const initialState: CounterState = {
+const initialState: AuthState = {
   id: undefined,
   name: undefined,
   email: undefined,
@@ -34,10 +35,15 @@ export const authSlice = createSlice({
   reducers: {
     setLogin: (state, action: PayloadAction<PayloadLogin>) => {
       state = { ...action.payload };
+      return state;
+    },
+    logout: (state) => {
+      state = { ...initialState };
+      return state;
     },
   },
 });
 
-export const { setLogin } = authSlice.actions;
+export const { setLogin, logout } = authSlice.actions;
 
 export default authSlice.reducer;

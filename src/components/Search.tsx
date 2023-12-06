@@ -17,14 +17,12 @@ export default function Search() {
   // const [isLogin, setIsLogin] = useState(false);
   const handleSubmitInput = (e: React.KeyboardEvent<object>) => {
     console.log(88);
-    
+
     const target = e.target as HTMLInputElement;
     const keyCode = e.keyCode;
     if (keyCode === 13) {
       e.preventDefault();
-      console.log(123,target.value);
-
-      // setInput(target.value);
+      console.log(123, target.value);
     }
   };
 
